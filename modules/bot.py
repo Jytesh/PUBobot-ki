@@ -1253,70 +1253,15 @@ class Channel():
                                         else:
                                             t2.append(ts.Rating(mu=match.ranks[match.beta_team[i].id], sigma=match.sigma[match.beta_team[i].id]));
                                     qual = ts.quality([t1,t2])
-                                    #client.reply(self.channel, member, "DEBUG LOLLOLOLOLOLL:" + str(t1) + " " + str(t2) + ", qual=" + str(qual))
-                                    if qual >= 0.5:
-                                        x[idx] = member
-                                        idx = match.players.index(target)
-                                        match.players = list(match.players)
-                                        match.players[idx] = member
-
-                                        #update ranks table if needed
-                                        if match.ranked:
-                                            match.ranks = stats3.get_ranks(self, [i.id for i in match.players])
-                                            match.ranks_season = stats3.get_ranks_season(self, [i.id for i in match.players])
-                                            match.sigma = stats3.get_sigma(self, [i.id for i in match.players])
-                                            match.sigma_season = stats3.get_sigma_season(self, [i.id for i in match.players])
-                                            match.players = list(sorted(match.players, key=lambda p: match.ranks[p.id], reverse=True))
-                                        client.notice(self.channel, match._teams_picking_to_str())
-                                        return
-                                    else:
-                                        client.reply(self.channel, member, "Sub denied, too low match quality: " + str(int(100*qual))+"%")
-                                        return
+                                    client.reply(self.channel, member, "See your servers announcements/rules on subbing. Match Quality: " + str(int(100*qual))+"%")
+                                    return
                         client.reply(self.channel, member, "Specified player not found in the match!")
                 else:
                         client.reply(self.channel, member, "You must specify a player to substitute!")
 
         def capfor(self, member, args):
-                match = self._match_by_player(member)
-                if True:
-                        client.reply(self.channel, member, "Nice try")
-                        return
-                if not match:
-                        client.reply(self.channel, member, "Could not find an active match.")
-                        return
-                        
-                if match.state != "teams_picking":
-                        client.reply(self.channel, member, "The match is not on the teams picking stage.")
-                        return
-
-                if match.captains_role:
-                        if match.captains_role not in [role.id for role in member.roles]:
-                                client.reply(self.channel, member, "You dont possess the captain role for this pickup.")
-                                return
-
-                if len(args):
-                        if args[0] == match.team_names[0].lower():
-                                team = match.alpha_team
-                        elif args[0] == match.team_names[1].lower():
-                                team = match.beta_team
-                        else:
-                                client.reply(self.channel, member, "Specified team must be **{0}** or **{1}**.".format(*match.team_names))
-                                return
-                else:
-                        client.reply(self.channel, member, "You must specify the team.")
-                        return
-
-                for x in [match.unpicked, match.beta_team, match.alpha_team]:
-                        if member in x:
-                                idx = x.index(member)
-                                if len(team):
-                                        x[idx] = team[0]
-                                        team[0] = member
-                                else:
-                                        x.remove(member)
-                                        team.append(member)
-                                client.notice(self.channel, match._teams_picking_to_str())
-                                return
+                client.reply(self.channel, member, "Nice try")
+                return
 
         def print_teams(self, member):
                 match = self._match_by_player(member)
