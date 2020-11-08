@@ -1011,8 +1011,15 @@ class Channel():
                                         
                         submsg = submsg.replace("%pickup_name%", self.lastgame_pickup.name)
                         submsg = submsg.replace("%ip%", ip or "")
-                        submsg = submsg.replace("%password%", password or "") 
+                        submsg = submsg.replace("%password%", password or "")
+                        subdm = submsg
                         submsg = submsg.replace("%promotion_role%", str(promotion_role or ""))
+                        subdm = subdm.replace("%promotion_role%", "")
+                        subdm = subdm+" <#{0}>".format(self.id)
+
+                        for pickup in self.pickups:
+                            for player in list(pickup.players):
+                                client.private_reply(player, subdm)
 
                         promotion_role = self.get_value('promotion_role', self.lastgame_pickup)
                         edit_role = False
