@@ -1664,8 +1664,11 @@ class Channel():
                                                 pickup = i
                                                 break
                                 if not pickup:
-                                        client.reply(self.channel, member, "Pickup '{0}' not found on this channel.".format(args[0]))
-                                        return
+                                    if "@" not in args[0]:
+                                        client.reply(self.channel, member, "Pickup '{0}' not found on this channel.".format(args[0].replace('@','')))
+                                    else:
+                                        client.reply(self.channel, member, "looking for a noadd?")
+                                    return
 
                         elif len(self.pickups)==1:
                                 pickup=self.pickups[0]
