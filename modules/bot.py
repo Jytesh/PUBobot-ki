@@ -820,6 +820,13 @@ class Channel():
 
                                 elif lower[0]=="seed_season_dontusethis":
                                         self.seed_player_season(member, lower[1:msglen], access_level)
+
+                                elif lower[0]=="atrange":
+                                        self.get_range_details(member, lower[1:len(lower)])
+
+                                elif lower[0]=="range":
+                                        self.get_range_details_season(member, lower[1:len(lower)])
+
                         
         ### COMMANDS ###
 
@@ -1534,6 +1541,50 @@ class Channel():
                         for i in matches:
                                 ago = datetime.timedelta(seconds=int(time.time() - int(i[1])))
                                 s += "\n... ({0}) {1} ago, {2}, {3:+} rating".format(i[0], ago, i[2], int(100*i[3]))
+                        s += "```"
+                        client.notice(self.channel, s)
+
+                else:
+                        client.notice(self.channel, "No rating data found.")
+
+        def get_range_details(self, member, args):
+                if len(args):
+                        details, matches = stats3.get_rank_details(self.id, nick=" ".join(args))
+                else:
+                        details, matches = stats3.get_rank_details(self.id, user_id=member.id)
+
+                if details:
+                        sig = float(details[5])
+                        rank = float(details[2])
+                        #3, 1.1, 0.1
+                        s = "Range for "+details[1]+" ["+str(int(100*details[2]))+"]"
+                        s += "\n```Confidence | Lower - Upper Bound"
+                        s += "\n--------------------------------"
+                        s += "\n 95% | "+str(int(100*(rank-3*sig)))+" - "+str(int(100*(rank+3*sig)))
+                        s += "\n 50% | "+str(int(100*(rank-1.1*sig)))+" - "+str(int(100*(rank+1.1*sig)))
+                        s += "\n 5%  | "+str(int(100*(rank-0.1*sig)))+" - "+str(int(100*(rank+0.1*sig)))
+                        s += "```"
+                        client.notice(self.channel, s)
+
+                else:
+                        client.notice(self.channel, "No rating data found.")
+
+        def get_range_details_season(self, member, args):
+                if len(args):
+                        details, matches = stats3.get_rank_details_season(self.id, nick=" ".join(args))
+                else:
+                        details, matches = stats3.get_rank_details_season(self.id, user_id=member.id)
+
+                if details:
+                        sig = float(details[5])
+                        rank = float(details[2])+3*sig
+                        #3, 1.1, 0.1
+                        s = "Range for "+details[1]+" ["+str(int(100*details[2]))+"]"
+                        s += "\n```Confidence | Lower - Upper Bound"
+                        s += "\n--------------------------------"
+                        s += "\n 95% | "+str(int(100*(rank-3*sig)))+" - "+str(int(100*(rank+3*sig)))
+                        s += "\n 50% | "+str(int(100*(rank-1.1*sig)))+" - "+str(int(100*(rank+1.1*sig)))
+                        s += "\n 5%  | "+str(int(100*(rank-0.1*sig)))+" - "+str(int(100*(rank+0.1*sig)))
                         s += "```"
                         client.notice(self.channel, s)
 
