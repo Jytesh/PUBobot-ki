@@ -827,6 +827,10 @@ class Channel():
                                 elif lower[0]=="range":
                                         self.get_range_details_season(member, lower[1:len(lower)])
 
+                                elif lower[0] in ['global', 'glb']:
+                                        self.get_global_leaderboard(lower[1:2])
+
+
                         
         ### COMMANDS ###
 
@@ -1477,6 +1481,32 @@ class Channel():
 
                 print(page)
                 data = stats3.get_ladder_season(self.id, page) #[rank, nick, wins, loses]
+                if len(data):
+
+                        l = ["{0:^3}|{1:^11}|{2:^25.25}|{3:^9}| {4}".format(
+                                (page*10)+(n+1),
+                                str(int(100*data[n][0])) + utils.rating_to_icon(int(100*data[n][0])),
+                                data[n][1],
+                                int(data[n][2]+data[n][3]),
+                                "{0:3.1f}/{1:<3.1f} ({2}%)".format(data[n][2], data[n][3], int(data[n][2]*100/((data[n][2]+data[n][3]) or 1)))
+                        ) for n in range(0, len(data))]
+
+                        s = "```markdown\n № | Rating〈Ξ〉 |         Nickname        | Matches |   W/L\n{0}\n{1}```".format(
+                                "-"*60,
+                                "\n".join(l))
+
+                        client.notice(self.channel, s)
+                else:
+                        client.notice(self.channel, "Nothing found.")
+
+        def get_global_leaderboard(self, page):
+                try:
+                        page = int(page[0])-1
+                except:
+                        page = 0
+
+                print(page)
+                data = stats3.get_global_ladder(self.id, page) #[rank, nick, wins, loses]
                 if len(data):
 
                         l = ["{0:^3}|{1:^11}|{2:^25.25}|{3:^9}| {4}".format(

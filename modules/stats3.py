@@ -389,6 +389,11 @@ def get_ladder_season(channel_id, page):
         c.execute("SELECT (rank-3*sigma), nick, wins, loses FROM channel_players_season WHERE channel_id = ? AND rank IS NOT NULL AND wins+loses > 0 ORDER BY (rank-3*sigma) desc LIMIT ?", (channel_id, (page+1)*10))
         return c.fetchall()[page*10:]
 
+def get_global_ladder(channel_id, page):
+        limit = int((page+1)*10)
+        c.execute("SELECT rank, nick, wins, loses FROM channel_players WHERE rank IS NOT NULL AND wins+loses > 0 ORDER BY rank desc LIMIT ?", (limit, ))
+        return c.fetchall()[page*10:]
+
 def stats(channel_id, text=False):
         if not text: #return overall stats
                 c.execute("SELECT pickup_name, count(pickup_name) FROM pickups WHERE channel_id = ? GROUP BY pickup_name", (channel_id, ))
