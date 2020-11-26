@@ -1586,8 +1586,10 @@ class Channel():
                 if details:
                         sig = float(details[5])
                         rank = float(details[2])
+                        #placed?
                         #3, 1.1, 0.1
-                        s = "Range for "+details[1]+" ["+str(int(100*details[2]))+"]"
+                        s = details[1]+" ["+str(int(100*details[2]))+"]"
+                        s += " | Placed: " + str(sig<3.68) + " ["+str(round(sig,2))+"]"
                         s += "\n```Confidence | Lower - Upper Bound"
                         s += "\n--------------------------------"
                         s += "\n 95% | "+str(int(100*(rank-3*sig)))+" - "+str(int(100*(rank+3*sig)))
@@ -1609,7 +1611,8 @@ class Channel():
                         sig = float(details[5])
                         rank = float(details[2])+3*sig
                         #3, 1.1, 0.1
-                        s = "Range for "+details[1]+" ["+str(int(100*details[2]))+"]"
+                        s = details[1]+" ["+str(int(100*details[2]))+"]"
+                        s += " | Placed: " + str(sig<3.68) + " ["+str(round(sig,2))+"]"
                         s += "\n```Confidence | Lower - Upper Bound"
                         s += "\n--------------------------------"
                         s += "\n 95% | "+str(int(100*(rank-3*sig)))+" - "+str(int(100*(rank+3*sig)))
