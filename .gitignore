@@ -3,3 +3,4 @@ logs/
 __pycache__/
 config.cfg
 tstesting.py
+node_modules/
