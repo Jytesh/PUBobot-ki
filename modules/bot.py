@@ -2300,7 +2300,7 @@ class Channel():
                                         else:
                                                 client.private_reply(member, '\r\n'.join(["[{0}] {1}: '{2}'".format(pickup.name, key, str(value)) for (key, value) in pickup.cfg.items()]))
                                                 return
-                        client.reply(self.channel, member, "Pickup '{0}' not found.".format(args[0]))
+                        client.reply(self.channel, member, "Pickup `{0}` not found.".format(args[0]))
                 else:
                         client.reply(self.channel, member, "You must specify a pickup")
 
